@@ -5,6 +5,8 @@ import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @Api(value = "associados-api",
@@ -26,5 +28,5 @@ public interface AssociadoApi {
     @PostMapping("/votar")
     ResponseEntity<String> votar(@RequestParam("cpf") String cpf,
                                  @RequestParam("codigoSessaoVotacao") Integer codigoSessaoVotacao,
-                                 @RequestParam("voto") String voto);
+                                 @RequestParam("voto") String voto) throws IOException;
 }

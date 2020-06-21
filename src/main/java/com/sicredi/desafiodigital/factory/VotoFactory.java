@@ -14,6 +14,16 @@ public class VotoFactory {
                 .build();
     }
 
+    public static final VotoEntity mapToEntity(VotoModel votoModel) {
+        return VotoEntity
+                .builder()
+                .codigo(votoModel.getCodigo())
+                .cpfAssociado(votoModel.getCpfAssociado())
+                .codigoSessaoVotacao(votoModel.getCodigoSessaoVotacao())
+                .valor(votoModel.getValor())
+                .build();
+    }
+
     public static final VotoModel mapToModel(VotoEntity votoEntity) {
         return VotoModel
                 .builder()

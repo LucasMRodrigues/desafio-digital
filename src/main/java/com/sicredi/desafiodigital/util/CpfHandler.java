@@ -1,8 +1,13 @@
 package com.sicredi.desafiodigital.util;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Random;
 
 public class CpfHandler {
+
+    private static final String URL_DA_API_EXTERNA_PARA_VALIDAR_CPF = "https://user-info.herokuapp.com/users/";
 
     public static final String gerarCPF() {
 
@@ -23,11 +28,11 @@ public class CpfHandler {
         int n8 = numeroAleatorio.nextInt(10);
         int n9 = numeroAleatorio.nextInt(10);
 
-        int soma = n9*2 + n8*3 + n7*4 + n6*5 + n5*6 + n4*7 + n3*8 + n2*9 + n1*10;
+        int soma = n9 * 2 + n8 * 3 + n7 * 4 + n6 * 5 + n5 * 6 + n4 * 7 + n3 *8  + n2 * 9 + n1 * 10;
 
         int valor = (soma / 11) * 11;
 
-        digito1 = soma-valor;
+        digito1 = soma - valor;
 
         resto = (digito1 % 11);
 
@@ -70,5 +75,14 @@ public class CpfHandler {
         String bloco4 = cpf.substring(9, 11);
 
         return bloco1 + "." + bloco2 + "." + bloco3 + "-" + bloco4;
+    }
+
+    public static final int validarCpf(String cpf) throws IOException {
+        URL url = new URL(URL_DA_API_EXTERNA_PARA_VALIDAR_CPF + cpf);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.connect();
+
+        return connection.getResponseCode();
     }
 }
