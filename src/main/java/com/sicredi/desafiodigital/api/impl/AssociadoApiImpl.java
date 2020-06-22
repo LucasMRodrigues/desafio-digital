@@ -22,7 +22,7 @@ public class AssociadoApiImpl implements AssociadoApi {
 
     @Override
     public ResponseEntity<AssociadoDto> criarAssociado(String nome) {
-        var associado = associadoService.salvarAssociado(nome);
+        var associado = associadoService.criarAssociado(nome);
 
         return new ResponseEntity(associado, HttpStatus.OK);
     }

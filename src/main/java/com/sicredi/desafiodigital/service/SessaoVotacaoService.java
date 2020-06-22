@@ -1,15 +1,18 @@
 package com.sicredi.desafiodigital.service;
 
+import com.sicredi.desafiodigital.domain.dto.SessaoVotacaoDto;
 import com.sicredi.desafiodigital.domain.model.SessaoVotacaoModel;
+import com.sicredi.desafiodigital.factory.SessaoVotacaoFactory;
 import com.sicredi.desafiodigital.repository.SessaoVotacaoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.sicredi.desafiodigital.factory.SessaoVotacaoFactory.mapToEntity;
@@ -80,17 +83,14 @@ public class SessaoVotacaoService {
                 nomePauta + ", foi: " + resultadoSim + resultadoNao + definicao;
     }
 
-    public String criarSessaoVotacao(Integer codigoPauta, LocalDateTime dataInicio, LocalDateTime dataFim) {
-        if (Objects.isNull(dataInicio)) {
-            dataInicio = LocalDateTime.now();
-        }
+    public String iniciarSessaoVotacao(Integer codigoPauta, LocalDateTime dataFim) {
 
         if (Objects.isNull(dataFim)) {
             dataFim = LocalDateTime.now().plusMinutes(1);
         }
 
-        if (dataFim.isBefore(dataInicio)) {
-            return "A data de termino nao pode ser anterior a data de inicio!";
+        if (dataFim.isBefore(LocalDateTime.now())) {
+            return "A data de termino nao pode ser anterior a data atual!";
         }
 
         var pauta = pautaService.obterPautaPeloCodigo(codigoPauta);
@@ -99,8 +99,22 @@ public class SessaoVotacaoService {
             return "Nenhuma pauta encontrada para o codigo " + codigoPauta;
         }
 
-        sessaoVotacaoRepository.save(mapToEntity(codigoPauta, dataInicio, dataFim));
+        sessaoVotacaoRepository.save(mapToEntity(codigoPauta, dataFim));
 
         return "Sessao de votacao para a pauta " + pauta.getNome() + " criada com sucesso!";
+    }
+
+    public List<SessaoVotacaoDto> obterTodasAsSessoesDeVotacao() {
+
+        AtomicReference<String> nomePauta = new AtomicReference<>();
+
+        return sessaoVotacaoRepository.findAll()
+                .stream()
+                .filter(Objects::nonNull)
+                .peek(sessaoVotacao -> {
+                    nomePauta.set(pautaService.obterNomeDaPautaPeloCodigo(sessaoVotacao.getCodigoPauta()));
+                })
+                .map(sessaoVotacao -> SessaoVotacaoFactory.mapToDto(sessaoVotacao, nomePauta.get()))
+                .collect(Collectors.toList());
     }
 }

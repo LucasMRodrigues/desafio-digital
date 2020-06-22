@@ -10,7 +10,5 @@ import lombok.Setter;
 public class PautaDto {
 
     private Integer codigo;
-    private String nome;
-    private Integer totalVotosSim;
-    private Integer totalVotosNao;
+    private String  nome;
 }

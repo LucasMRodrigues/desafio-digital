@@ -4,16 +4,10 @@ import com.sicredi.desafiodigital.domain.dto.AssociadoDto;
 import com.sicredi.desafiodigital.domain.model.AssociadoModel;
 import com.sicredi.desafiodigital.factory.AssociadoFactory;
 import com.sicredi.desafiodigital.repository.AssociadoRepository;
-import com.sicredi.desafiodigital.util.CpfHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +37,7 @@ public class AssociadoService {
         return Objects.nonNull(associado) ? mapToModel(associado) : null;
     }
 
-    public AssociadoDto salvarAssociado(String nome) {
+    public AssociadoDto criarAssociado(String nome) {
         var cpf = gerarCPF();
 
         return mapToDto(associadoRepository.save(mapToEntity(cpf, nome)));
@@ -73,10 +67,6 @@ public class AssociadoService {
 
         if (Objects.isNull(sessaoVotacao)) {
             return "Nenhuma sessao de votacao encontrada para o codigo " + codigoSessaoVotacao;
-        }
-
-        if (LocalDateTime.now().isBefore(sessaoVotacao.getDataInicio())) {
-            return "Essa sessao de votacao ainda nao esta aberta.";
         }
 
         if (LocalDateTime.now().isAfter(sessaoVotacao.getDataFim())) {

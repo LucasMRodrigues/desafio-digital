@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class SessaoVotacaoDto {
 
     private Integer  codigo;
-    private PautaDto pauta;
-    private LocalDateTime dataInicio;
+    private String   nomePauta;
+    private Boolean  sessaoVotacaoEncerrada;
     private LocalDateTime dataFim;
 }

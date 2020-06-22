@@ -1,11 +1,13 @@
 package com.sicredi.desafiodigital.api;
 
+import com.sicredi.desafiodigital.domain.dto.SessaoVotacaoDto;
 import io.swagger.annotations.Api;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -16,11 +18,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 @RequestMapping(path = "/sessao-votacoes")
 public interface SessaoVotacaoApi {
 
+    @GetMapping()
+    ResponseEntity<List<SessaoVotacaoDto>> obterTodasAsSessoesDeVotacao();
+
     @PostMapping("/new")
-    ResponseEntity<Integer> criarSessaoDeVotacao(
+    ResponseEntity<Integer> iniciarSessaoDeVotacao(
             @RequestParam("codigoPauta") Integer codigoPauta,
-            @RequestParam(value = "dataInicio", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
             @RequestParam(value = "dataFim", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim);
 
