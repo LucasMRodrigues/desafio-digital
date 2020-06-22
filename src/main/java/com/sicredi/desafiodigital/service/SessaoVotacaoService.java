@@ -15,6 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static com.sicredi.desafiodigital.exchange.producer.SessaoVotacaoProducer.publicarInicioDaSessao;
+import static com.sicredi.desafiodigital.exchange.producer.SessaoVotacaoProducer.publicarResultadoDaSessao;
 import static com.sicredi.desafiodigital.factory.SessaoVotacaoFactory.mapToEntity;
 import static com.sicredi.desafiodigital.factory.SessaoVotacaoFactory.mapToModel;
 
@@ -42,7 +44,7 @@ public class SessaoVotacaoService {
         return null;
     }
 
-    public String obterResultadoDaSessaoDeVotacao(Integer codigoSessaoVotacao) {
+    public String obterResultadoDaSessaoDeVotacao(Integer codigoSessaoVotacao) throws Exception {
         var sessaoVotacao = obterSessaoDeVotacaoPeloCodigo(codigoSessaoVotacao);
 
         if (Objects.isNull(sessaoVotacao)) {
@@ -79,11 +81,15 @@ public class SessaoVotacaoService {
 
         var definicao = votosSim.get() > votosNao.get() ? "\nPauta aprovada!" : "\nPauta reprovada!";
 
-        return "O resultado da sessao de votacao " + sessaoVotacao.getCodigo() + ", referente a pauta " +
+        var mensagem = "O resultado da sessao de votacao " + sessaoVotacao.getCodigo() + ", referente a pauta " +
                 nomePauta + ", foi: " + resultadoSim + resultadoNao + definicao;
+
+        publicarResultadoDaSessao(mensagem);
+
+        return mensagem;
     }
 
-    public String iniciarSessaoVotacao(Integer codigoPauta, LocalDateTime dataFim) {
+    public String iniciarSessaoVotacao(Integer codigoPauta, LocalDateTime dataFim) throws Exception {
 
         if (Objects.isNull(dataFim)) {
             dataFim = LocalDateTime.now().plusMinutes(1);
@@ -99,7 +105,9 @@ public class SessaoVotacaoService {
             return "Nenhuma pauta encontrada para o codigo " + codigoPauta;
         }
 
-        sessaoVotacaoRepository.save(mapToEntity(codigoPauta, dataFim));
+        var sessao = sessaoVotacaoRepository.save(mapToEntity(codigoPauta, dataFim));
+
+        publicarInicioDaSessao(sessao.getCodigo());
 
         return "Sessao de votacao para a pauta " + pauta.getNome() + " criada com sucesso!";
     }

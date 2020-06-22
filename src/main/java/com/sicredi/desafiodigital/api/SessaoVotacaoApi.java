@@ -25,9 +25,9 @@ public interface SessaoVotacaoApi {
     ResponseEntity<Integer> iniciarSessaoDeVotacao(
             @RequestParam("codigoPauta") Integer codigoPauta,
             @RequestParam(value = "dataFim", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim);
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim) throws Exception;
 
     @GetMapping("{codigoSessaoVotacao}/resultado")
     ResponseEntity<String> obterResultadoDaSessaoDeVotacao(
-            @PathVariable("codigoSessaoVotacao") Integer codigoSessaoVotacao);
+            @PathVariable("codigoSessaoVotacao") Integer codigoSessaoVotacao) throws Exception;
 }

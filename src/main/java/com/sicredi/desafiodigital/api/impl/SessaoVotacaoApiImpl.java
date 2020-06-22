@@ -28,14 +28,14 @@ public class SessaoVotacaoApiImpl implements SessaoVotacaoApi {
     public ResponseEntity<Integer> iniciarSessaoDeVotacao(
             Integer codigoPauta,
             LocalDateTime dataFim
-    ) {
+    ) throws Exception {
         var codigoSessaoVotacaoCriada = sessaoVotacaoService.iniciarSessaoVotacao(codigoPauta, dataFim);
 
         return new ResponseEntity(codigoSessaoVotacaoCriada, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<String> obterResultadoDaSessaoDeVotacao(Integer codigoSessaoVotacao) {
+    public ResponseEntity<String> obterResultadoDaSessaoDeVotacao(Integer codigoSessaoVotacao) throws Exception {
 
         var mensagem = sessaoVotacaoService.obterResultadoDaSessaoDeVotacao(codigoSessaoVotacao);
 

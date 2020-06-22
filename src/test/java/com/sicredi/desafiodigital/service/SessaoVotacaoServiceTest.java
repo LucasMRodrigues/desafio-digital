@@ -25,7 +25,7 @@ public class SessaoVotacaoServiceTest {
     private AssociadoService associadoService;
 
     @Test
-    public void deveRetornarMensagemDeSessaoNaoEncontrada() {
+    public void deveRetornarMensagemDeSessaoNaoEncontrada() throws Exception {
         var codigoSessaoVotacao = 999999;
 
         var mensagem = sessaoVotacaoService.obterResultadoDaSessaoDeVotacao(codigoSessaoVotacao);
@@ -34,7 +34,7 @@ public class SessaoVotacaoServiceTest {
     }
 
     @Test
-    public void deveRetornarMensagemDeDataTerminoAnteriorADataAtual() {
+    public void deveRetornarMensagemDeDataTerminoAnteriorADataAtual() throws Exception {
         var codigoPauta = 999999;
 
         var dataFim = LocalDateTime.now().minusDays(1);
@@ -45,7 +45,7 @@ public class SessaoVotacaoServiceTest {
     }
 
     @Test
-    public void deveRetornarMensagemDeNenhumaPautaEncontrada() {
+    public void deveRetornarMensagemDeNenhumaPautaEncontrada() throws Exception {
         var codigoPauta = 999999;
 
         var dataFim = LocalDateTime.now().plusDays(1);
@@ -56,7 +56,7 @@ public class SessaoVotacaoServiceTest {
     }
 
     @Test
-    public void deveRetornarMensagemDeSucessoAoCriarASessaoDeVotacao() {
+    public void deveRetornarMensagemDeSucessoAoCriarASessaoDeVotacao() throws Exception {
 
         var nomePauta = "Pauta de teste para criar Sessão de Votação";
 
@@ -71,7 +71,7 @@ public class SessaoVotacaoServiceTest {
     }
 
     @Test
-    public void deveRetornarSessaoDeVotacaoComApenas1MinutoDeDuracao() {
+    public void deveRetornarSessaoDeVotacaoComApenas1MinutoDeDuracao() throws Exception {
 
         var nomePauta = "Pauta para validar duração da Sessão";
 
@@ -87,7 +87,7 @@ public class SessaoVotacaoServiceTest {
     }
 
     @Test
-    public void deveRetornarOResultadoDeSessaoAprovada() {
+    public void deveRetornarOResultadoDeSessaoAprovada() throws Exception {
 
         var numeroAssociadoList = List.of(1, 2, 3);
 

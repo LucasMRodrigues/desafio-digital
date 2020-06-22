@@ -72,7 +72,7 @@ public class AssociadoServiceTest {
     }
 
     @Test
-    public void deveRetornarMensagemQueASessaoJaEstaEncerrada() throws IOException, InterruptedException {
+    public void deveRetornarMensagemQueASessaoJaEstaEncerrada() throws Exception {
         var associado = associadoService.criarAssociado("Fulano");
 
         var cpfFormatado = associado.getCpf().replace(".", "").replace("-", "");
