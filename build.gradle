@@ -41,6 +41,12 @@ dependencies {
 	compile group: 'com.rabbitmq', name: 'amqp-client', version: '5.9.0'
 }
 
+jar {
+	manifest {
+		attributes 'Main-Class': 'DesafioDigitalApplication'
+	}
+}
+
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
